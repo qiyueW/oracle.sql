@@ -25,9 +25,9 @@ public class App {
 			rs = stmt.executeQuery("select * from emp");
 			// 执行executeQuery()方法，用于产生单个结果集。
 			while (rs.next()) {
-				System.out.println(rs.getString("empno"));
-				System.out.println(rs.getString("ename"));
-				System.out.println(rs.getString("deptno"));
+				System.out.print(rs.getString("empno")+" ");
+				System.out.print(rs.getString("ename")+" ");
+				System.out.print(rs.getString("deptno")+" ");
 				System.out.println(rs.getInt("sal"));
 			}
 		} catch (ClassNotFoundException e) {
