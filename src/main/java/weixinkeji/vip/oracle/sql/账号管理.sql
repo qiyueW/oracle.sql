@@ -1,0 +1,9 @@
+--解锁HR帐户并重置密码
+--https://docs.oracle.com/database/121/TDDDG/tdddg_connecting.htm#TDDDG12520
+ALTER USER HR ACCOUNT UNLOCK IDENTIFIED BY 新的密码;
+
+--检查用户帐户的状态
+SELECT ACCOUNT_STATUS FROM DBA_USERS WHERE USERNAME = 'SCOTT';
+
+--查找帐户创建和密码到期日期
+SELECT CREATED, EXPIRY_DATE FROM DBA_USERS WHERE USERNAME = 'SCOTT';
