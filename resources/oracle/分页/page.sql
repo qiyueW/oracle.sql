@@ -1,5 +1,10 @@
 --要求：每次显示2条记录	
 
+--把第1页的数据查出来
+SELECT * FROM
+(SELECT  ROWNUM 我跟行走,E.* FROM EMP E
+WHERE ROWNUM<=2) T2 WHERE 我跟行走>0;
+
 --把第2页的数据查出来
 --7566
 --7654
