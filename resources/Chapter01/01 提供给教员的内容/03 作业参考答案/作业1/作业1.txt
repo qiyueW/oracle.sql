@@ -1,0 +1,68 @@
+（1）
+CREATE TABLE orders
+    ( order_id           NUMBER(12)
+    , order_date         DATE NOT NULL
+    , order_mode         VARCHAR2(8)
+    , customer_id        NUMBER(6) NOT NULL
+    , order_status       NUMBER(2)
+    , order_total        NUMBER(8,2)
+    , sales_rep_id       NUMBER(6)
+    , promotion_id       NUMBER(6)
+    ) ;
+
+CREATE TABLE customers
+    ( customer_id        NUMBER(6)     
+    , cust_first_name    VARCHAR2(20) NOT NULL
+    , cust_last_name     VARCHAR2(20) NOT NULL
+    , nls_language       VARCHAR2(3)
+    , nls_territory      VARCHAR2(30)
+    , credit_limit       NUMBER(9,2)
+    , cust_email         VARCHAR2(30)
+    , account_mgr_id     NUMBER(6)
+    , marital_status     VARCHAR2(30)
+    , gender 		 CHAR(1)
+    );
+
+
+
+（2）查询客户表(Customers)中所有不重复的地域。
+
+	SELECT DISTINCT nls_territory
+	  FROM customers;
+
+
+（3）在订单表（Orders）中找出总定价在1万到10万之间的订单号、顾客姓氏（Customers表的cust_last_name列）和客户经理名称（Employee表的ename列）。
+
+SELECT order_id,cust_last_name,ename，account_mgr_id
+  FROM orders o INNER JOIN customers c
+    ON o.customer_id=c.customer_id
+ INNER JOIN employee e
+    ON c.account_mgr_id=e.empno
+ WHERE order_total BETWEEN 10000 AND 100000;
+
+（4）在顾客表（Customers）中找出所在地域为AMERICA的客户经理名称（Employee表的ename列）和薪水（employee表的sal列）。
+
+SELECT ename,sal 
+  FROM employee
+ WHERE empno IN(SELECT account_mgr_id
+                  FROM customers
+                 WHERE nls_territory='AMERICA');
+
+（5）在顾客表（Customers）中找出所在地域为AMERICA、ITALY、INDIA和CHINA的客户编号及语言。
+
+SELECT customer_id,nls_language
+  FROM customers
+ WHERE nls_territory IN ('AMERICA','ITALY','INDIA','CHINA');
+
+
+（6）在顾客表（Customers）中找出姓氏首字母为”F”的客户编号和邮箱。
+
+SELECT customer_id,cust_email 
+  FROM customers
+ WHERE cust_last_name LIKE 'F%';
+
+（7）查出所有客户姓名和所下的订单编号。
+
+SELECT cust_last_name||' '||cust_last_name,order_id
+  FROM customers c LEFT JOIN orders o 
+    ON o.customer_id=c.customer_id

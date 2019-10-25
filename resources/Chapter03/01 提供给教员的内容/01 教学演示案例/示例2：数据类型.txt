@@ -1,0 +1,15 @@
+
+/*
+===========================================================
+|         数据类型
+============================================================
+*/
+DECLARE
+   v_empno employee.empno%TYPE :=7788;
+   v_rec employee%ROWTYPE;
+BEGIN
+   SELECT * INTO v_rec FROM employee WHERE empno=v_empno;
+   DBMS_OUTPUT.PUT_LINE
+	   ('姓名:'||v_rec.ename||'工资:'||v_rec.sal||'工作时间:'||v_rec.hiredate); 
+END;
+

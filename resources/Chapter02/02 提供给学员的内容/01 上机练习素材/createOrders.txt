@@ -1,0 +1,11 @@
+
+CREATE TABLE orders
+    ( order_id           NUMBER(12)
+    , order_date         DATE NOT NULL
+    , order_mode         VARCHAR2(8)
+    , customer_id        NUMBER(6) NOT NULL
+    , order_status       NUMBER(2)
+    , order_total        NUMBER(8,2)
+    , sales_rep_id       NUMBER(6)
+    , promotion_id       NUMBER(6)
+    ) ;

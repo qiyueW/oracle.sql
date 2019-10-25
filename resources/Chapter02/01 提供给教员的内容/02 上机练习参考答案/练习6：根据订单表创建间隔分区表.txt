@@ -1,0 +1,23 @@
+
+/*
+===========================================================
+|     利用间隔分区将开始创建时没有分区的表创建为新的间隔分区表
+============================================================
+*/
+
+
+--1.利用现有表Orders创建间隔分区表intervalOrders
+CREATE TABLE intervalOrders
+		PARTITION BY RANGE(order_date)
+		INTERVAL(NUMTOYMINTERVAL(1,'YEAR'))
+		(PARTITION P1 VALUES LESS THAN (to_date('2005-01-01','yyyy/mm/dd')))
+        AS SELECT * FROM Orders;
+
+--2.查询分区情况
+	SELECT table_name,partition_name 
+   	  FROM user_tab_partitions 
+	 WHERE table_name=UPPER('intervalOrders');
+--3.向表插入'2013/01/01'数据
+insert into intervalOrders values (1001,to_date('2013-01-01','yyyy-mm-dd'),'direct',101,0,1000,153,null);
+
+--4.再次查询某一分区数据

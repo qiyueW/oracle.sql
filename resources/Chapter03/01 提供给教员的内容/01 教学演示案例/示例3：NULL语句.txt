@@ -1,0 +1,16 @@
+/*
+===========================================================
+|         显示变量v_counter的值，如果该变量小于10，则增加10并显示该变量改变后的值。
+============================================================
+*/
+DECLARE
+    v_counter NUMBER := 5;
+BEGIN
+       DBMS_OUTPUT.PUT_LINE('v_counter的当前值为:'||v_counter);
+       IF v_counter >= 10 THEN
+          NULL; --为了使语法变得有意义,去掉NULL会报语法错误
+       ELSE
+	       v_counter := v_counter + 10;
+		  DBMS_OUTPUT.PUT_LINE('v_counter的改变后值为:'||v_counter);
+       END IF;
+ END;

@@ -1,0 +1,14 @@
+DECLARE
+   v_empno VARCHAR2(10):=7788;
+   v_ename VARCHAR2(4);
+BEGIN
+  SELECT ename INTO v_ename FROM employee WHERE empno=v_empno;
+  dbms_output.put_line(v_ename);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+       dbms_output.put_line('雇员不存在！错误为:'||SQLCODE||SQLERRM);
+  WHEN VALUE_ERROR THEN
+     dbms_output.put_line('名称长度超过变量长度');
+  WHEN others THEN
+     dbms_output.put_line('出现其他异常');
+END;

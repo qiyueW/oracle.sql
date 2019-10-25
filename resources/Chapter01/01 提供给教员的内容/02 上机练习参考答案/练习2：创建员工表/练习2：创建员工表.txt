@@ -1,0 +1,91 @@
+/*
+============================================================
+|                      创建员工表employee
+============================================================
+*/
+CREATE TABLE employee  /*-创建员工信息表-*/
+(EMPNO NUMBER(4), --员工编号
+ENAME VARCHAR2(10),          --员工姓名
+JOB VARCHAR2(9),             --员工工种
+MGR NUMBER(4),               --上级经理编号
+HIREDATE DATE,               --受雇日期
+SAL NUMBER(7,2),             --员工薪水
+COMM NUMBER(7,2),            --福利
+DEPTNO NUMBER(2)           --部门编号
+); 
+
+
+/*==========================================================
+|                      插入数据
+============================================================
+*/
+INSERT INTO EMPLOYEE VALUES
+(7369,'SMITH','CLERK',7902,to_date('17-12-2005','dd-mm-yyyy'),5800,NULL,20);
+INSERT INTO EMPLOYEE VALUES
+(7499,'ALLEN','SALESMAN',7698,to_date('20-2-2006','dd-mm-yyyy'),6600,300,30);
+INSERT INTO EMPLOYEE VALUES
+(7521,'WARD','SALESMAN',7698,to_date('22-2-2006','dd-mm-yyyy'),6250,500,30);
+INSERT INTO EMPLOYEE VALUES
+(7566,'JONES','MANAGER',7839,to_date('2-4-2006','dd-mm-yyyy'),7975,NULL,20);
+INSERT INTO EMPLOYEE VALUES
+(7654,'MARTIN','SALESMAN',7698,to_date('28-9-2006','dd-mm-yyyy'),6250,1400,30);
+INSERT INTO EMPLOYEE VALUES
+(7698,'BLAKE','MANAGER',7839,to_date('1-5-2006','dd-mm-yyyy'),7850,NULL,30);
+INSERT INTO EMPLOYEE VALUES
+(7782,'CLARK','MANAGER',7839,to_date('9-6-2006','dd-mm-yyyy'),7450,NULL,10);
+INSERT INTO EMPLOYEE VALUES
+(7788,'SCOTT','ANALYST',7566,to_date('13-7-2012','dd-mm-yyyy'),8000,NULL,20);
+INSERT INTO EMPLOYEE VALUES
+(7839,'KING','PRESIDENT',NULL,to_date('17-11-2006','dd-mm-yyyy'),10000,NULL,10);
+INSERT INTO EMPLOYEE VALUES
+(7844,'TURNER','SALESMAN',7698,to_date('8-9-2006','dd-mm-yyyy'),6500,0,30);
+INSERT INTO EMPLOYEE VALUES
+(7876,'ADAMS','CLERK',7788,to_date('13-7-2012','dd-mm-yyyy'),7100,NULL,20);
+INSERT INTO EMPLOYEE VALUES
+(7900,'JAMES','CLERK',7698,to_date('3-12-2006','dd-mm-yyyy'),5950,NULL,30);
+INSERT INTO EMPLOYEE VALUES
+(7902,'FORD','ANALYST',7566,to_date('3-12-2006','dd-mm-yyyy'),5000,NULL,20);
+INSERT INTO EMPLOYEE VALUES
+(7934,'MILLER','CLERK',7782,to_date('23-1-2007','dd-mm-yyyy'),6300,NULL,10);
+
+/*
+============================================================
+|                     添加约束  
+============================================================
+*/
+ALTER TABLE employee
+ADD CONSTRAINT PK_empno PRIMARY KEY (empno);
+
+ALTER TABLE employee
+   ADD CONSTRAINT FK_deptno          
+     FOREIGN KEY(deptno) REFERENCES dept(deptno);
+
+
+/*
+============================================================
+|           向employee 表添加empTel_no 和empAddress 两列  
+============================================================
+*/
+ALTER TABLE employee
+ADD (empTel_no VARCHAR2 (12),
+empAddress VARCHAR2(20));
+
+/*
+============================================================
+|                   删除empTel_no 和empAddress 两列 
+============================================================
+*/
+ALTER TABLE employee DROP (empTel_no,empAddress);   --删除empTel_no和empAddress两列
+
+/*
+============================================================
+|              按照薪水从高到低显示数据 
+============================================================
+*/
+SELECT * FROM employee ORDER BY sal DESC;
+
+
+
+
+
+

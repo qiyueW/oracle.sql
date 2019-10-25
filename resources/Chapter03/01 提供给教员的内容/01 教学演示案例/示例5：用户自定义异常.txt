@@ -1,0 +1,23 @@
+
+/*
+===========================================================
+|         查询编号为7788的雇员的福利补助（comm列）。
+============================================================
+*/
+
+DECLARE
+ 	v_comm employee.comm%TYPE;
+	e_comm_is_null EXCEPTION; --定义异常类型变量
+BEGIN
+	SELECT comm INTO v_comm FROM employee WHERE empno=7788;
+	IF v_comm IS NULL THEN
+	   RAISE e_comm_is_null;
+	END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+       dbms_output.put_line('雇员不存在！错误为:'||SQLCODE||SQLERRM);
+    WHEN e_comm_is_null THEN
+	dbms_output.put_line('该雇员无补助');
+    WHEN others THEN
+	dbms_output.put_line('出现其他异常');
+END;

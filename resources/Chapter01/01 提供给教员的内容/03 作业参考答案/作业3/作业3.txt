@@ -1,0 +1,6 @@
+3. 根据员工表（Employee表）编写一个语句，显示各部门的每个工作类别中支付的最高工资
+
+SELECT deptno,job,MAX(sal)
+  FROM employee
+ GROUP BY deptno,job
+ ORDER BY deptno,job;

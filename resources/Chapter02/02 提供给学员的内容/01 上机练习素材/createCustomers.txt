@@ -1,0 +1,13 @@
+CREATE TABLE customers
+    ( customer_id        NUMBER(6)     
+    , cust_first_name    VARCHAR2(20) NOT NULL
+    , cust_last_name     VARCHAR2(20) NOT NULL
+    , nls_language       VARCHAR2(3)
+    , nls_territory      VARCHAR2(30)
+    , credit_limit       NUMBER(9,2)
+    , cust_email         VARCHAR2(30)
+    , account_mgr_id     NUMBER(6)
+    , marital_status     VARCHAR2(30)
+    , gender 		 CHAR(1)
+    );
+

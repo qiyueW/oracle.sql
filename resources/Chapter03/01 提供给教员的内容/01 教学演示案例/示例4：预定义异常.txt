@@ -1,0 +1,21 @@
+
+/*
+===========================================================
+|         预定义异常
+============================================================
+*/
+DECLARE
+   v_ename employee.ename%TYPE;
+BEGIN
+   SELECT ename INTO v_ename 
+   FROM employee 
+   WHERE empno=1234;
+   dbms_output.put_line('雇员名:'||v_ename);
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+      dbms_output.put_line('雇员号不正确');   
+   WHEN TOO_MANY_ROWS THEN
+      dbms_output.put_line('查询只能返回单行');
+   WHEN OTHERS THEN
+      dbms_output.put_line('错误号：'||SQLCODE||'错误描述：'||SQLERRM);
+END;

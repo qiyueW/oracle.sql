@@ -1,0 +1,16 @@
+
+/*
+============================================================
+|                     创建同义词
+============================================================
+*/
+--使用SYSTEM用户登录，A_hr获得创建公有同义词权限
+GRANT CREATE PUBLIC SYNONYM TO A_hr;
+
+--在A_hr模式下创建公有同义词p_Stock_Received作为A_hr用户Stock_Received表的别名
+CREATE PUBLIC SYNONYM p_Stock_Received FOR Stock_Received;
+--将查询dept的权限授予pulic角色。
+GRANT SELECT ON Stock_Received TO PUBLIC; 
+
+--在A_oe模式下访问公有同义词
+SELECT * FROM p_Stock_Received;

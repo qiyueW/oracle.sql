@@ -1,0 +1,79 @@
+CREATE OR REPLACE PROCEDURE fire_employee(
+    eno employee.empno%type,                  --输入参数,雇员编号
+    on_Flag OUT number,       --执行状态
+    os_Msg OUT VARCHAR2       --提示信息
+)
+IS
+   e1 EXCEPTION; --定义异常类型变量
+BEGIN
+   DELETE
+     FROM employee
+    WHERE empno=eno;
+   IF SQL%NOTFOUND THEN
+     RAISE e1;
+   ELSE
+      on_Flag:=1;
+      os_Msg:='成功';
+   END IF;
+EXCEPTION
+   WHEN e1 THEN
+      on_Flag:=-1;
+      os_Msg:='该雇员不存在。';
+   WHEN OTHERS THEN
+      on_Flag:=SQLCODE;
+      os_Msg:=SQLERRM;
+END; 
+
+DECLARE
+   v_no employee.empno%TYPE;
+   on_Flag number(1);     --执行状态
+   os_Msg VARCHAR2(200);       --提示信息  
+BEGIN
+   v_no:=7788;
+   fire_employee(v_no,on_flag,os_Msg);
+   dbms_output.put_line(on_flag);
+   dbms_output.put_line(os_Msg);
+END;
+
+
+--调用get_sals存储过程,显示员工薪水
+
+
+CREATE OR REPLACE PROCEDURE get_sals(
+   cur_salary OUT SYS_REFCURSOR,
+   on_Flag OUT number,       --执行状态
+   os_Msg OUT VARCHAR2       --提示信息
+) 
+AS
+BEGIN
+   OPEN cur_salary FOR
+       SELECT empno,sal FROM employee;
+   on_Flag:=1;
+   os_Msg:='成功';       
+EXCEPTION
+   WHEN OTHERS THEN
+      on_Flag:=-1;
+      os_Msg:='其他错误，与管理员联系。';
+END;
+
+DECLARE
+   v_empno  employee.empno%type;
+   v_sal employee.sal%type;
+   emp_salary SYS_REFCURSOR;
+   on_Flag number(1);     --执行状态
+   os_Msg VARCHAR2(200);       --提示信息    
+BEGIN
+   get_sals(emp_salary,on_Flag,os_Msg);
+   IF on_flag=1 THEN
+      LOOP
+         FETCH emp_salary INTO v_empno, v_sal;
+         EXIT WHEN emp_salary%notfound;
+         DBMS_OUTPUT.PUT_LINE(v_empno||'的薪水是' ||v_sal);
+      END LOOP;
+   ELSE
+      dbms_output.put_line(os_Msg);
+   END IF;
+   IF emp_salary%ISOPEN THEN
+      CLOSE emp_salary;
+   END IF;
+END;

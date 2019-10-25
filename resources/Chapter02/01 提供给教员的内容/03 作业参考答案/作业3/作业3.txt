@@ -1,0 +1,17 @@
+/*
+============================================================
+|                     创建范围分区表
+============================================================
+*/
+CREATE TABLE Stock_Received
+(
+      STOCK_ID VARCHAR2 (5),
+      STOCK_DATE DATE NOT NULL,
+      COST NUMBER (10)
+)
+PARTITION BY RANGE (STOCK_DATE)
+(
+      PARTITION S1 VALUES LESS THAN (TO_DATE ('01/04/2001',  'DD/MM/YYYY')),
+      PARTITION S2 VALUES LESS THAN (TO_DATE ('01/07/2001',   'DD/MM/YYYY')),
+      PARTITION S3 VALUES LESS THAN (MAXVALUE)
+);

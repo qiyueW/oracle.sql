@@ -1,0 +1,61 @@
+/*
+===========================================================
+|              范围分区
+============================================================
+*/
+
+CREATE TABLE rangeOrders
+(
+      order_id           NUMBER(12)
+    , order_date         DATE NOT NULL
+    , order_mode         VARCHAR2(8)
+    , customer_id        NUMBER(6) NOT NULL
+    , order_status       NUMBER(2)
+    , order_total        NUMBER(8,2)
+    , sales_rep_id       NUMBER(6)
+    , promotion_id       NUMBER(6)
+) 
+PARTITION BY RANGE (order_date)
+(
+   PARTITION Part1 VALUES LESS THAN (to_date('2005-01-01', 'yyyy-mm-dd')),
+   PARTITION Part2 VALUES LESS THAN (to_date('2006-01-01', 'yyyy-mm-dd')),
+   PARTITION Part3 VALUES LESS THAN (to_date('2007-01-01', 'yyyy-mm-dd')),
+   PARTITION Part4 VALUES LESS THAN (to_date('2008-01-01', 'yyyy-mm-dd')),
+   PARTITION Part5 VALUES LESS THAN (to_date('2009-01-01', 'yyyy-mm-dd'))
+);
+
+--要查看每一分区的数据
+SELECT  *  FROM rangeOrders partition(Part1);
+SELECT  *  FROM rangeOrders partition(Part2);
+SELECT  *  FROM rangeOrders partition(Part3);
+SELECT  *  FROM rangeOrders partition(Part4);
+SELECT  *  FROM rangeOrders partition(Part5);
+
+--插入'2013/01/01'数据
+insert into rangeOrders values (1001,to_date('2013-01-01','yyyy-mm-dd'),'direct',101,0,1000,153,null);
+--报错后，修正
+DROP TABLE rangeOrders;
+
+CREATE TABLE rangeOrders
+(
+      order_id           NUMBER(12)
+    , order_date         DATE NOT NULL
+    , order_mode         VARCHAR2(8)
+    , customer_id        NUMBER(6) NOT NULL
+    , order_status       NUMBER(2)
+    , order_total        NUMBER(8,2)
+    , sales_rep_id       NUMBER(6)
+    , promotion_id       NUMBER(6)
+) 
+PARTITION BY RANGE (order_date)
+(
+   PARTITION Part1 VALUES LESS THAN (to_date('2005-01-01', 'yyyy-mm-dd')),
+   PARTITION Part2 VALUES LESS THAN (to_date('2006-01-01', 'yyyy-mm-dd')),
+   PARTITION Part3 VALUES LESS THAN (to_date('2007-01-01', 'yyyy-mm-dd')),
+   PARTITION Part4 VALUES LESS THAN (to_date('2008-01-01', 'yyyy-mm-dd')),
+   PARTITION Part5 VALUES LESS THAN (MAXVALUE)
+);
+
+
+--要删除第三季度的数据
+DELETE FROM rangeOrders partition(Part3);

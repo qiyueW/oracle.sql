@@ -1,0 +1,12 @@
+DECLARE
+	CURSOR order_cursor IS
+	   SELECT order_id,order_total FROM orders;
+BEGIN
+	FOR order_record IN order_cursor LOOP
+	     IF order_record.order_total<50000 THEN
+           DBMS_OUTPUT.PUT_LINE('订单号'||order_record.order_id||'需提高订货额');
+       ELSE
+       		  DBMS_OUTPUT.PUT_LINE('订单号'||order_record.order_id||'已达到订货额');
+       END IF;
+	END LOOP;
+END;

@@ -1,0 +1,11 @@
+
+
+/*
+============================================================
+|                   给户A_hr用户授权，回收权限  
+============================================================
+*/
+GRANT connect, resource TO A_hr;  --授予CONNECT和RESOURCE两个角色
+REVOKE connect, resource FROM A_hr; --撤销CONNECT和RESOURCE两个角色 
+GRANT SELECT ON SCOTT.emp TO A_hr; --允许用户查看 EMP 表中的记录
+GRANT UPDATE ON SCOTT.emp TO A_hr; --允许用户更新 EMP 表中的记录

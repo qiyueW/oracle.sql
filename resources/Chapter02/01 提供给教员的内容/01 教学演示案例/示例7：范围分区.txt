@@ -1,0 +1,27 @@
+/*
+===========================================================
+|              范围分区
+============================================================
+*/
+
+CREATE TABLE SALES1
+(
+   SALES_ID NUMBER,
+   PRODUCT_ID VARCHAR2(5),
+   SALES_DATE DATE NOT NULL
+)
+PARTITION BY RANGE (SALES_DATE)
+(
+   PARTITION P1 VALUES LESS THAN (to_date('2013-04-1', 'yyyy-mm-dd')),
+   PARTITION P2 VALUES LESS THAN (to_date('2013-07-1', 'yyyy-mm-dd')),
+   PARTITION P3 VALUES LESS THAN (to_date('2013-10-1', 'yyyy-mm-dd')),
+   PARTITION P4 VALUES LESS THAN (to_date('2014-01-1', 'yyyy-mm-dd')),
+   PARTITION P5 VALUES LESS THAN (maxvalue)
+);
+
+--要查看在第三季度的数据
+SELECT  *  FROM SALES1 partition(P3);
+
+--要删除第三季度的数据
+DELETE FROM SALES1 partition(P3);
+

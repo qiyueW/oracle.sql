@@ -1,0 +1,16 @@
+步骤一：
+	分别启动OracleOraDb11g_home1TNSListener服务和OracleServiceSID服务；
+步骤二：
+	进入SQL*Plus工具，出现提示符：“请输入用户名：”
+步骤三：
+	输入system/orcl@orclDB,出现提示符：“SQL>”
+步骤四：
+	SQL>SELECT * FROM SCOTT.emp; --出现14条记录
+步骤五：
+	进入PL/SQL Developer工具，出现登录对话框
+步骤六：
+	按顺序输入system、 orcl、orclDB，选择normal
+步骤七：
+	新建SQL窗口
+步骤八：
+	SELECT * FROM SCOTT.emp; --出现14条记录

@@ -1,0 +1,40 @@
+DECLARE 
+--变量 DECLARE variable_name [CONSTANT] type [NOT NULL] [:=value];
+--v_name varchar2(50);
+v_name EMP.ENAME%TYPE :='abc'; --类似于java中， 类(数据库表).静态属性(列）.（%）getClass（TYPE）
+emp_table_type  EMP%ROWTYPE ;--  一般取行类型的变量， 都是   表名_table_type
+empno NUMBER(4,0):=99;
+ename EMP.ENAME%TYPE:='语句块';
+MYEXCPTION EXCEPTION;--定义一个 异常
+BEGIN
+
+IF empno=99 THEN--如果 empno等于99 ,
+     RAISE MYEXCPTION; --抛出一个 MYEXCPTION异常（自定义的异常）
+END IF;
+
+--DBMS_OUTPUT.put_line(v_name);
+SELECT ENAME INTO v_name FROM EMP WHERE EMPNO=736900; --  SELECT...INTO..必须只有一个值，
+
+SELECT *  INTO emp_table_type FROM EMP WHERE EMPNO=7369;--
+
+DBMS_OUTPUT.put_line(v_name||'从rowtype中='||emp_table_type.ename);
+--v_name:='aaaa';
+--DBMS_OUTPUT.put_line(v_name);
+--DML
+INSERT INTO EMP(EMPNO,ENAME) VALUES(empno,ename);
+INSERT INTO EMP(EMPNO,ENAME) VALUES(empno,ename);
+
+COMMIT;
+EXCEPTION
+    WHEN MYEXCPTION THEN
+         DBMS_OUTPUT.put_line('这是我们自定义异常！！');
+    WHEN DUP_VAL_ON_INDEX THEN
+        DBMS_OUTPUT.put_line('主键重复！！');
+        ROLLBACK;
+        WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line('其他类型的异常');
+        ROLLBACK;
+END;
+--SELECT * FROM EMP;
+--SET SERVEROUT ON;
+--emp_table_type  EMP%ROWTYPE ;

@@ -1,0 +1,62 @@
+/*
+===========================================================
+|             间隔分区
+============================================================
+*/
+
+--创建间隔分区表
+CREATE TABLE SALES2
+(
+   SALES_ID NUMBER,
+   PRODUCT_ID VARCHAR2(5),
+   SALES_DATE DATE NOT NULL
+)
+		PARTITION BY RANGE(SALES_DATE)
+		INTERVAL(NUMTOYMINTERVAL(3,'MONTH'))
+		(PARTITION P1 VALUES LESS THAN (to_date('2013-04-1','yyyy/mm/dd')));
+--插入数据
+	INSERT INTO sales2 VALUES (1,'a',to_date('2013-08-1'),10,'1');
+--获得分区情况
+	SELECT table_name,partition_name 
+   	  FROM user_tab_partitions 
+	 WHERE table_name=UPPER('sales2');
+--查询输出结果，系统自动根据输入数据情况创建新分区“SYS_P82”
+   	TABLE_NAME	PARTITION_NAME
+	----------------------------
+	SALES2	     P1
+	SALES2	     SYS_P82
+--查询分区数据
+	SELECT * FROM sales2 PARTITION(sys_P82);
+
+
+/*
+===========================================================
+|     利用间隔分区将开始创建时没有分区的表创建为新的间隔分区表
+============================================================
+*/
+/*准备工作*/
+--1.创建普通SALES表
+CREATE TABLE SALES
+(
+   SALES_ID NUMBER,
+   PRODUCT_ID VARCHAR2(5),
+   SALES_DATE DATE NOT NULL
+);
+
+--2.自行向SALES表插入数据
+
+/*实施步骤*/
+--1.创建间隔分区表SALES3
+CREATE TABLE SALES3
+		PARTITION BY RANGE(SALES_DATE)
+		INTERVAL(NUMTOYMINTERVAL(3,'MONTH'))
+		(PARTITION P1 VALUES LESS THAN (to_date('2013-04-1','yyyy/mm/dd')))
+        AS SELECT * FROM SALES; --SALES表为已经创建的表
+
+--2.查询分区情况
+	SELECT table_name,partition_name 
+   	  FROM user_tab_partitions 
+	 WHERE table_name=UPPER('sales3');
+--3.查询某一分区数据
+--4.自行向SALES3表插入数据
+--5.再次查询某一分区数据

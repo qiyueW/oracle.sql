@@ -1,0 +1,36 @@
+/*
+===========================================================
+|             私有同义词
+============================================================
+*/
+--使用SYSTEM用户登录，授予A_oe用户获得访问A_hr模式下的employee表的权限
+GRANT SELECT ON A_hr.employee TO A_oe;
+GRANT CREATE SYNONYM TO A_oe;
+
+--连接A_oe用户
+--创建同义词SY_EMP
+CREATE SYNONYM SY_EMP FOR A_hr.employee;
+--访问同义词
+SELECT * FROM SY_EMP;
+/*
+===========================================================
+|             公有同义词
+============================================================
+*/
+--使用SYSTEM用户登录，A_hr获得创建公有同义词权限
+GRANT CREATE PUBLIC SYNONYM TO A_hr;
+
+--在A_hr模式下创建公有同义词public_sy_emp作为A_hr用户employee表的别名
+CREATE PUBLIC SYNONYM public_sy_emp FOR employee;
+
+--在A_oe模式下访问公有同义词
+SELECT * FROM public_sy_emp;
+/*
+===========================================================
+|              删除同义词
+============================================================
+*/
+--删除私有同义词
+DROP SYNONYM A_oe.sy_emp;
+--删除公有同义词
+DROP PUBLIC SYNONYM A_hr.public_sy_emp;

@@ -1,0 +1,66 @@
+
+/*
+===========================================================
+|         补充 ：创建退休员工表
+============================================================
+*/
+
+
+CREATE TABLE retireEmp AS SELECT * FROM employee;
+
+ALTER TABLE  retireEmp RENAME COLUMN empno TO rempno;  
+
+UPDATE retireEmp  SET rempno=8888 WHERE rempno=7788;
+
+/*
+===========================================================
+|          union操作符
+============================================================
+*/
+SELECT empno FROM emp 
+ UNION 
+SELECT rempno FROM retireEmp;
+
+/*
+===========================================================
+|          union+order by
+============================================================
+*/
+SELECT empno FROM emp  
+UNION 
+SELECT rempno FROM retireEmp 
+ ORDER BY empno;
+                      
+
+/*
+===========================================================
+|          INTERSECT操作符
+============================================================
+*/
+SELECT empno FROM emp  
+INTERSECT
+SELECT rempno FROM retireEmp;
+/*
+===========================================================
+|          MINUS操作符
+============================================================
+*/
+SELECT empno FROM emp  
+MINUS
+SELECT rempno FROM retireEmp;
+
+--SQL Server语句
+SELECT *
+  FROM employee  C
+ WHERE NOT  EXISTS
+      (SELECT * 
+         FROM retireEmp G
+        WHERE C.empno = G.rempno
+      )
+
+/*
+===========================================================
+|          连接操作符
+============================================================
+*/
+SELECT job||'_'||ename FROM emp;

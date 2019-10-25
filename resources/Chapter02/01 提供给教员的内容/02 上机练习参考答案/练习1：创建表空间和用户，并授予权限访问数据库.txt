@@ -1,0 +1,39 @@
+/*
+===========================================================
+|              创建一个自动增长的表空间tp_orders
+============================================================
+*/
+--创建一个自动增长的表空间worktbs的SQL语句如下： 
+
+CREATE TABLESPACE tp_orders
+DATAFILE 'E:\Data\WORKTBS01.DBF' 
+SIZE 10M AUTOEXTEND ON;
+
+
+/*
+============================================================
+|                   创建用户A_oe
+============================================================
+*/
+
+CREATE USER A_oe
+IDENTIFIED BY bdqn
+DEFAULT TABLESPACE tp_orders
+TEMPORARY TABLESPACE TEMP;
+	
+/*
+============================================================
+|                将A_hr. employee表的访问权限授予A_oe用户 
+============================================================
+*/
+GRANT connect, resource TO A_oe;  --授予CONNECT和RESOURCE两个角色
+
+GRANT SELECT ON A_hr.employee TO A_oe; 
+
+/*
+============================================================
+|                使用A_oe用户连接ORCL数据库，访问A_hr.employee表  
+============================================================
+*/
+
+SELECT * FROM A_hr.employee;

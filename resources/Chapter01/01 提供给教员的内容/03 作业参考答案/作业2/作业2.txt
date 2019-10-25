@@ -1,0 +1,6 @@
+2. 根据员工表（Employee表）编写一个语句，只有当最低工资少于 5000 而且最高工资超过15000时，才显示部门 ID 以及该部门支付的最低工资和最高工资。
+
+SELECT deptno,MAX(sal),MIN(sal) 
+  FROM employee
+ GROUP BY deptno
+HAVING MAX(sal)>15000 AND MIN(sal)<5000;

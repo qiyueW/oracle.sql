@@ -1,0 +1,11 @@
+DECLARE
+   v_emp employee%ROWTYPE;
+BEGIN
+  SELECT * INTO v_emp FROM employee WHERE deptno=10;
+
+EXCEPTION
+   WHEN TOO_MANY_ROWS THEN
+       dbms_output.put_line('返回多行！错误为:'||SQLCODE||SQLERRM);
+   WHEN others THEN
+     dbms_output.put_line('出现其他异常');
+END;

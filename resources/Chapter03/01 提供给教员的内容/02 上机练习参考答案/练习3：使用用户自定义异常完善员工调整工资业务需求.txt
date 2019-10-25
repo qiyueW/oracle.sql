@@ -1,0 +1,28 @@
+
+
+DECLARE
+ 	v_sal employee.sal%TYPE;
+ 	v_deptno employee.deptno%TYPE;
+	e_comm_is_null EXCEPTION; --定义异常类型变量
+BEGIN
+	SELECT sal,deptno INTO v_sal,v_deptno 
+    FROM employee 
+   WHERE empno=7788;
+   IF  v_deptno=20 THEN
+      IF v_sal<10000 THEN
+         UPDATE employee
+         SET sal=10000
+         WHERE empno=7788;
+      ELSE
+	       RAISE e_comm_is_null;
+      END IF;
+	 END IF;
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+       dbms_output.put_line('雇员不存在！错误为:'||SQLCODE||SQLERRM);
+	 WHEN e_comm_is_null THEN
+	   dbms_output.put_line('工资不低于10000元');
+	 WHEN others THEN
+	   dbms_output.put_line('出现其他异常');
+END;
+

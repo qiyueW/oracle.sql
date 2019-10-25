@@ -1,0 +1,28 @@
+/*
+===========================================================
+|               创建一个表Stock_Received
+============================================================
+*/
+
+CREATE TABLE Stock_Received
+(
+      STOCK_ID VARCHAR2 (5),
+      STOCK_DATE DATE NOT NULL,
+      COST NUMBER (10)
+)
+
+/*
+============================================================
+|                     创建序列
+============================================================
+*/
+
+CREATE SEQUENCE myseq 
+START WITH 1000
+INCREMENT BY 10
+MAXVALUE 1100
+CYCLE
+CACHE 30;
+
+
+INSERT INTO Stock_Received VALUES (myseq.nextVal,sysdate,1000);

@@ -1,0 +1,46 @@
+
+/*
+===========================================================
+|         添加员工记录。
+============================================================
+*/
+CREATE OR REPLACE PROCEDURE add_employee(
+    eno NUMBER,  								--输入参数,雇员编号
+    name VARCHAR2,								--输入参数,雇员名称
+    salary NUMBER,								--输入参数,雇员薪水
+    job VARCHAR2 DEFAULT 'CLERK',				--输入参数,雇员工种默认'CLERK'
+    dno NUMBER 								--输入参数,雇员部门编号
+)
+IS
+BEGIN
+   INSERT INTO employee 
+      (empno,ename,sal,job,deptno)VALUES (eno,name,salary,job, dno);
+END;
+
+/*
+===========================================================
+|         sql*plus下调用存储过程
+============================================================
+*/
+
+--EXEC add_employee(1111,'MARY',2000,'MANAGER',10);
+--EXEC add_employee(dno=>10,name=>'MARY',salary=>2000,eno=>1112, job=>'MANAGER');
+--EXEC add_employee(1113,dno=>10,name=>'MARY',salary=>2000,job=>'MANAGER');
+--EXEC add_employee(1114,dno=>10,name=>'MARY',salary=>2000);
+
+
+/*
+===========================================================
+|         PL/SQL下调用存储过程
+============================================================
+*/
+BEGIN
+   --按位置传递参数
+   add_employee(2111,'MARY',2000,'MANAGER',10);
+   --按名字传递参数
+   add_employee(dno=>10,name=>'MARY',salary=>2000,eno=>2112, job=>'MANAGER');
+   --混合方法传递参数
+   add_employee(3111,dno=>10,name=>'MARY',salary=>2000,job=>'MANAGER');
+   --默认值法
+   add_employee(4111,dno=>10,name=>'MARY',salary=>2000);
+END;

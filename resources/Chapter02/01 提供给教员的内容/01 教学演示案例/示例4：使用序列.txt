@@ -1,0 +1,47 @@
+/*
+===========================================================
+|              创建序列。从序号10开始，每次增加1，最大为2000，不循环，再增加会报错
+============================================================
+*/
+ 
+ CREATE SEQUENCE seq1
+START WITH 10
+INCREMENT BY 1
+MAXVALUE 2000
+NOCYCLE
+CACHE 30;
+/*
+===========================================================
+|              在玩具表中，需要标识列toyid作为标识，不需要有任何含义，可以作为主键
+============================================================
+*/
+--创建toys表
+CREATE TABLE toys(
+toyid NUMBER NOT NULL,
+toyname VARCHAR2(20),
+toyprice NUMBER
+);
+
+--插入数据
+INSERT INTO toys (toyid, toyname, toyprice)
+VALUES (seq1.NEXTVAL, 'TWENTY', 25);
+INSERT INTO toys (toyid, toyname, toyprice)
+VALUES (seq1.NEXTVAL,'MAGIC PENCIL',75);
+
+--查询数据
+SELECT * FROM toys;
+
+SELECT seq1.CURRVAL FROM dual;
+
+--修改序列
+ALTER SEQUENCE seq1
+MAXVALUE 5000
+CYCLE;
+
+--删除序列
+DROP SEQUENCE seq1;
+
+--使用SYS_GUID函数
+SELECT sys_guid() FROM dual;
+
+

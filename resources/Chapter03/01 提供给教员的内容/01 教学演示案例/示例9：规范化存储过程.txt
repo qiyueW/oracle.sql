@@ -1,0 +1,38 @@
+
+
+/*
+===========================================================
+|         将示例8按照推荐规则修改。
+============================================================
+*/
+CREATE OR REPLACE PROCEDURE add_employee(
+    eno employee.empno%type,                  --输入参数,雇员编号
+    name employee.ename%type,                --输入参数,雇员名称
+    salary employee.sal%type,                --输入参数,雇员薪水
+    job employee.job%type DEFAULT 'CLERK',        --输入参数,雇员工种默认'CLERK'
+    dno employee.deptno%type,                 --输入参数,雇员部门编号
+    on_Flag OUT number,       --执行状态
+    os_Msg OUT VARCHAR2       --提示信息
+)
+IS
+BEGIN
+   INSERT INTO employee (empno,ename,sal,job,deptno)VALUES (eno,name,salary,job, dno);
+   on_Flag:=1;
+   os_Msg:='添加成功';
+EXCEPTION
+   WHEN DUP_VAL_ON_INDEX THEN
+      on_Flag:=-1;
+      os_Msg:='该雇员已存在。';
+   WHEN OTHERS THEN
+      on_Flag:=SQLCODE;
+      os_Msg:=SQLERRM;     
+END;
+
+DECLARE
+   on_Flag NUMBER;
+   os_Msg VARCHAR2(100);     
+BEGIN
+   --按位置传递参数
+   add_employee(2111,'MARY',2000,'MANAGER',10,on_Flag,os_Msg);
+   dbms_output.put_line(on_Flag||os_Msg);
+END;

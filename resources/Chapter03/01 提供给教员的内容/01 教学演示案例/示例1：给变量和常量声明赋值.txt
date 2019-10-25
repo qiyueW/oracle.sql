@@ -1,0 +1,17 @@
+/*
+===========================================================
+|        给变量和常量声明赋值
+============================================================
+*/
+DECLARE
+     v_ename VARCHAR2(20);
+     v_rate NUMBER(7,2);
+     c_rate_incr CONSTANT NUMBER(7,2):=1.10;
+BEGIN
+     --方法一：通过SELECT INTO给变量赋值
+     SELECT ename, sal* c_rate_incr  INTO   v_ename, v_rate
+      FROM   employee 
+     WHERE empno='7788';
+    --方法二：通过赋值操作符“:=”给变量赋值
+    v_ename:='SCOTT';
+END;

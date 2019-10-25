@@ -1,0 +1,16 @@
+/*
+===========================================================
+|          分析函数
+============================================================
+*/
+SELECT ename, deptno, sal,
+       --按照每个部门分组,对薪水从大到小排序,每个部门序号从1开始,同一个部门相同薪水序号相同,
+       --且和下一条不同记录的排名之间空出排名
+       RANK( ) OVER (PARTITION BY deptno ORDER BY sal DESC) "RANK",
+       --按照每个部门分组,对薪水从大到小排序,每个部门序号从1开始,同一个部门相同薪水序号相同,
+       --且和下一条不同记录的排名之间不空出排名
+       DENSE_RANK( ) OVER (PARTITION BY deptno ORDER BY sal DESC) "DENSE_RANK",
+       --按照每个部门分组,对薪水从大到小排序,每个部门序号从1开始,同一个部门相同薪水序号继续
+       --递增，顺序排名
+       ROW_NUMBER( ) OVER (PARTITION BY deptno ORDER BY sal DESC) "ROW_NUMBER"
+ FROM emp;

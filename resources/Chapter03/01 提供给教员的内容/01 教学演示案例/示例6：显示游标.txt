@@ -1,0 +1,39 @@
+
+/*
+===========================================================
+|         使用显式游标输出每个员工的姓名和薪水。
+============================================================
+*/
+DECLARE
+ name employee.ename%type; 
+ sal employee.sal%type; --定义两个变量来存放ename和sal的内容
+ CURSOR emp_cursor IS
+    SELECT ename,sal 
+      FROM employee;
+BEGIN
+OPEN emp_cursor; 
+LOOP
+   FETCH emp_cursor INTO name,sal; 
+   EXIT WHEN emp_cursor%NOTFOUND; 
+   DBMS_OUTPUT.PUT_LINE
+      ('第'||emp_cursor%ROWCOUNT||'个雇员:'||name||sal);
+END LOOP;
+CLOSE emp_cursor;
+END;
+
+/*
+===========================================================
+|        循环游标的用法。
+============================================================
+*/
+--显示雇员表中所有雇员的姓名和薪水
+DECLARE
+	CURSOR emp_cursor IS
+	   SELECT ename,sal FROM employee;
+BEGIN
+	FOR emp_record IN emp_cursor LOOP
+	   DBMS_OUTPUT.PUT_LINE
+          ('第'||emp_cursor%ROWCOUNT||'个雇员：'
+           ||emp_record.ename|| emp_record.sal);
+	END LOOP;
+END;

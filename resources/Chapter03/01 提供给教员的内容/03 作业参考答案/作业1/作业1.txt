@@ -1,0 +1,12 @@
+
+DECLARE
+ 	v_emp employee%ROWTYPE;
+BEGIN
+	SELECT * INTO v_emp FROM employee WHERE empno=7788;
+
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+       dbms_output.put_line('员工不存在！错误为:'||SQLCODE||SQLERRM);
+   WHEN others THEN
+	   dbms_output.put_line('出现其他异常');
+END;

@@ -1,0 +1,42 @@
+/*
+===========================================================
+|              在薪水级别（salgrade）表中，为级别编号（grade）列创建唯一索引
+============================================================
+*/
+
+CREATE UNIQUE INDEX index_unique_grade ON salgrade(grade);
+
+/*
+===========================================================
+|              在员工（employee）表中，为员工编号（empno）列创建反向键索引
+============================================================
+*/
+CREATE INDEX index_reverse_empno ON employee(empno) REVERSE; 
+/*
+===========================================================
+|              在员工（employee）表中，为工种（job）列创建位图索引
+============================================================
+*/
+
+CREATE BITMAP INDEX index_bit_job ON employee(job);
+/*
+===========================================================
+|              在员工（employee）表中，为员工名称（ename）列创建大写函数索引
+============================================================
+*/
+CREATE INDEX index_ename ON employee(UPPER(ename));
+
+--删除索引
+DROP INDEX index_bit_job;
+
+--将反向键索引更改为正常B树索引
+ALTER INDEX index_reverse_empno REBUILD NOREVERSE;
+
+--将索引移到指定表空间
+ALTER INDEX index_name REBUILD TABLESPACE tablespace_name;
+
+
+
+
+
+

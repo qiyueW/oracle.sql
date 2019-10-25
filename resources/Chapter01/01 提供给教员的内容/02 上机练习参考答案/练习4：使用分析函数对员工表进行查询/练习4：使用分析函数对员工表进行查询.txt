@@ -1,0 +1,11 @@
+/*
+===========================================================
+|          使用分析函数对员工表进行查询
+============================================================
+*/   
+SELECT * 
+FROM 
+(SELECT employee.* ,
+        DENSE_RANK( ) OVER (PARTITION BY deptno ORDER BY sal DESC) "DENSE_RANK"
+ FROM employee) e
+WHERE DENSE_RANK=2;

@@ -1,0 +1,92 @@
+DECLARE
+   v_tax_rate NUMBER(2);
+   v_sal_d NUMBER(5);
+   v_tax NUMBER(10,2);
+   v_sal NUMBER(10,2);
+   v_sum NUMBER(10,2):=0;
+   c_sal_start CONSTANT NUMBER(10):=3500;
+   CURSOR emp_cursor IS
+      SELECT sal 
+        FROM employee;
+BEGIN
+  OPEN emp_cursor; 
+  LOOP
+     FETCH emp_cursor INTO v_sal; 
+     EXIT WHEN emp_cursor%NOTFOUND;   
+     v_tax:=0;
+     IF v_sal>=3500 THEN
+        v_sal:=v_sal-c_sal_start;
+        CASE 
+        WHEN v_sal<=1500 THEN
+          v_tax_rate:=3;
+          v_sal_d:=0;
+        WHEN v_sal<=4500 THEN
+          v_tax_rate:=10;
+          v_sal_d:=105;   
+        WHEN v_sal<=9000 THEN 
+          v_tax_rate:=20;
+          v_sal_d:=555;
+        ELSE 
+          v_tax_rate:=25;
+          v_sal_d:=1005;
+        END CASE;
+        v_tax:=v_sal*v_tax_rate/100-v_sal_d;
+      END IF;
+      v_sum:=v_sal+v_tax;
+   END LOOP;
+   CLOSE emp_cursor;
+   dbms_output.put_line(v_sum);
+END;
+
+
+DECLARE
+   v_bonus NUMBER(10,2);
+   CURSOR emp_cursor IS
+      SELECT hiredate 
+        FROM employee
+        FOR UPDATE;
+BEGIN
+   FOR cur1 IN emp_cursor LOOP
+      IF sysdate-cur1.hiredate>=365*6 THEN
+         v_bonus:=2000;
+      ELSE
+         v_bonus:=1500;
+      END IF;
+      UPDATE employee SET comm=v_bonus
+       WHERE CURRENT OF emp_cursor; 
+   END LOOP;
+END;
+
+
+DECLARE
+   v_grade  NUMBER(2);
+   CURSOR emp_cursor IS
+      SELECT ename,sal,dname 
+        FROM employee e INNER join dept d
+          ON  e.deptno=d.deptno
+       WHERE dname='SALES';
+BEGIN
+   FOR cur1 IN emp_cursor LOOP    
+      CASE 
+      WHEN cur1.sal<=3200 AND cur1.sal>=700 THEN
+         v_grade:=1;
+      WHEN cur1.sal<=4400 THEN
+         v_grade:=2;
+      WHEN cur1.sal<=5000 THEN 
+         v_grade:=3;
+      WHEN cur1.sal<=7000 THEN 
+         v_grade:=4;
+      WHEN cur1.sal<=9999 THEN 
+         v_grade:=5;
+      ELSE 
+         v_grade:=0;
+      END CASE;
+      IF v_grade=0 THEN
+         dbms_output.put_line(cur1.ename||'所在部门：'||cur1.dname||' 薪水：'||cur1.sal||' 工资无级别');
+      ELSE
+         dbms_output.put_line(cur1.ename||'所在部门：'||cur1.dname||' 薪水：'||cur1.sal||' 工资级别:'||v_grade);      
+      END IF;
+   END LOOP;
+END;
+
+

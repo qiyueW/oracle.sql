@@ -1,0 +1,34 @@
+/*
+===========================================================
+|             使用序列生成部门表中部门编号的值
+============================================================
+*/
+ 
+CREATE SEQUENCE dept_seq
+START WITH 60
+INCREMENT BY 10
+MAXVALUE 10000
+NOCYCLE
+CACHE 30;
+
+INSERT INTO dept VALUES(dept_seq.nextval,'PERSONNEL','BEIJING');
+INSERT INTO dept VALUES(dept_seq.nextval,'MARKET','SHANGHAI');
+
+SELECT * FROM dept;
+
+--数据库迁移前准备工作
+DROP SEQUENCE dept_seq;
+
+
+--数据库迁移恢复工作
+--1.恢复序列对象
+CREATE SEQUENCE dept_seq
+START WITH 80
+INCREMENT BY 10
+MAXVALUE 10000
+NOCYCLE
+CACHE 30;
+--2.恢复部门表
+CREATE TABLE deptBak AS SELECT * FROM dept;
+--3.正常操作，插入数据
+INSERT INTO dept VALUES(dept_seq.nextval,'LAB','LONDON');

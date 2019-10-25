@@ -1,0 +1,133 @@
+(1)
+CREATE OR REPLACE PROCEDURE get_tax(
+       v_empno employee.empno%TYPE,
+       v_tax OUT NUMBER
+)
+IS
+   v_tax_rate NUMBER(2);
+   v_sal_d NUMBER(5);
+   v_sal NUMBER(10,2);
+   c_sal_start CONSTANT NUMBER(10):=3500;
+BEGIN
+   SELECT sal 
+     INTO v_sal 
+     FROM employee 
+    WHERE empno=v_empno;
+   v_tax:=0;
+   IF v_sal>=3500 THEN
+     v_sal:=v_sal-c_sal_start;
+     CASE 
+     WHEN v_sal<=1500 THEN
+          v_tax_rate:=3;
+          v_sal_d:=0;
+     WHEN v_sal<=4500 THEN
+          v_tax_rate:=10;
+          v_sal_d:=105;   
+     WHEN v_sal<=9000 THEN 
+          v_tax_rate:=20;
+          v_sal_d:=555;
+     ELSE 
+          v_tax_rate:=25;
+          v_sal_d:=1005;
+     END CASE;
+     v_tax:=v_sal*v_tax_rate/100-v_sal_d;
+   END IF;
+END;
+
+--调用
+DECLARE
+   v_empno employee.empno%TYPE;
+   v_tax NUMBER(10,2);
+BEGIN
+   v_empno:=7788;
+   get_tax(v_empno,v_tax); 
+   dbms_output.put_line(v_tax);
+END;
+(2)
+CREATE OR REPLACE PROCEDURE update_comm(
+    v_empno employee.empno%TYPE,
+    on_Flag OUT number,       --执行状态
+    os_Msg OUT VARCHAR2       --提示信息
+)
+IS
+   v_bonus NUMBER(10,2);
+   v_hiredate employee.hiredate%TYPE;
+BEGIN
+   on_Flag:=1;
+   os_Msg:='修改成功';
+   SELECT hiredate 
+     INTO v_hiredate 
+     FROM employee 
+    WHERE empno=v_empno;
+   IF sysdate-v_hiredate>=365*6 THEN
+       v_bonus:=2000;
+   ELSE
+       v_bonus:=1500;
+   END IF;
+   UPDATE employee SET comm=v_bonus
+    WHERE empno=v_empno; 
+   IF SQL%NOTFOUND THEN
+      on_Flag:=-1;
+      os_Msg:='该雇员不存在';      
+   END IF;
+EXCEPTION
+   WHEN OTHERS THEN
+      on_Flag:=-2;
+      os_Msg:='其他错误，与管理员联系。';        
+END;
+
+--调用
+DECLARE
+   v_no employee.empno%TYPE;
+   on_Flag number(1);     --执行状态
+   os_Msg VARCHAR2(200);       --提示信息  
+BEGIN
+   v_no:=7782;
+    update_comm(v_no,on_flag,os_Msg);
+   dbms_output.put_line(on_flag);
+   dbms_output.put_line(os_Msg);
+END;
+
+(3)
+CREATE OR REPLACE PROCEDURE get_grade(
+    v_empno employee.empno%TYPE,
+     v_grade OUT NUMBER
+ )
+IS
+   v_sal employee.sal%TYPE;
+BEGIN
+   SELECT sal
+     INTO v_sal 
+     FROM employee
+    WHERE empno=v_empno;
+   CASE 
+   WHEN v_sal<=3200 AND v_sal>=700 THEN
+      v_grade:=1;
+   WHEN v_sal<=4400 THEN
+      v_grade:=2;
+   WHEN v_sal<=5000 THEN 
+      v_grade:=3;
+   WHEN v_sal<=7000 THEN 
+      v_grade:=4;
+   WHEN v_sal<=9999 THEN 
+      v_grade:=5;
+   ELSE 
+      v_grade:=0;
+   END CASE;
+END;   
+    
+    
+
+--调用
+DECLARE
+   v_empno employee.empno%TYPE;
+   v_grade NUMBER(2);
+BEGIN
+   v_empno:=7788;
+   get_grade(v_empno,v_grade); 
+   IF v_grade=0 THEN
+      dbms_output.put_line(v_empno||' 工资无级别');
+   ELSE
+      dbms_output.put_line(v_empno||' 工资级别:'||v_grade);      
+   END IF;
+END;

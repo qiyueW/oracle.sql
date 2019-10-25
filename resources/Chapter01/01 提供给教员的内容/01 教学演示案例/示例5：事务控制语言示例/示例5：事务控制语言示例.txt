@@ -1,0 +1,32 @@
+
+/*
+===========================================================
+|          事务控制语句应用举例
+============================================================
+*/
+select * FROM dept;
+
+--执行步骤一：创建dept 表
+CREATE TABLE DEPT
+(    DEPTNO NUMBER(2)  PRIMARY KEY,  --部门编号
+     DNAME VARCHAR2(14) ,    --部门名称
+     LOC VARCHAR2(13)            --地址
+) ;                             
+--执行步骤二：插入数据
+INSERT INTO DEPT VALUES (10,'ACCOUNTING','NEW YORK');
+INSERT INTO DEPT VALUES (20,'RESEARCH','DALLAS');
+INSERT INTO DEPT VALUES (30,'SALES','CHICAGO');
+INSERT INTO DEPT VALUES (40,'OPERATIONS','BOSTON');
+--执行步骤三：操作dept 表
+INSERT INTO dept VALUES(50,'a',null);
+INSERT INTO dept VALUES(60,'b',null);
+SAVEPOINT a;
+INSERT INTO dept VALUES(70,'c',null);
+ROLLBACK TO SAVEPOINT a;
+--执行步骤四：查看dept 表,有50、60 号部门
+SELECT * FROM dept;
+--执行步骤五：回滚
+ROLLBACK;--没有50、60 号部门
+--执行步骤六：查看dept 表
+SELECT * FROM dept;
+

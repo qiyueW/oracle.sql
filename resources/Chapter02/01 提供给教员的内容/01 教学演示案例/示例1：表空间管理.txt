@@ -1,0 +1,41 @@
+/*
+===========================================================
+|          创建tp_hr表空间
+============================================================
+*/
+--推荐创建表空间示例
+CREATE TABLESPACE tp_hr
+   DATAFILE 
+   'd:\data\tp_hr01.dbf' SIZE 60M;
+        
+
+--查看表空间
+SELECT file_name,tablespace_name,bytes,autoextensible 
+  FROM dba_data_files 
+ WHERE tablespace_name='TP_HR';	
+
+/*
+===========================================================
+|          调整tp_hr表空间大小
+============================================================
+*/
+--方法一：更改数据文件的大小
+ALTER DATABASE DATAFILE
+   'D:\DATA\tp_hr01.dbf'
+   RESIZE 80M;
+       
+--方法二：向表空间内添加数据文件
+ALTER TABLESPACE tp_hr
+   ADD DATAFILE 
+   'E:\DATA\tp_hr02.DBF' SIZE 20M
+   AUTOEXTEND ON;
+
+/*
+===========================================================
+|          删除tp_hr表空间
+============================================================
+*/
+DROP TABLESPACE tp_hr;
+
+
+DROP TABLESPACE tp_hr INCLUDING CONTENTS;

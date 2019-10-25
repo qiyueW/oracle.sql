@@ -1,0 +1,22 @@
+/*
+===========================================================
+|              创建索引
+============================================================
+*/
+
+CREATE UNIQUE INDEX index_unique_customer_id ON customers(customer_id);
+或者
+CREATE INDEX index_reverse_customer_id ON customers(customer_id) REVERSE; 
+
+
+
+CREATE BITMAP INDEX index_bit_nls_territory ON customers(nls_territory);
+
+CREATE INDEX index_ename ON customers(cust_first_name,cust_last_name);
+
+
+
+
+
+
+
